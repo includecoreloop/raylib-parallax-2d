@@ -12,6 +12,7 @@
 #include "../../components/size.h"
 #include "../../components/parallax_layer.h"
 #include "../../components/vehicle.h"
+#include "../../components/space_ship.h"
 #include "../../game/scene.h"
 
 static const int UI_FONT_SIZE = 40;
@@ -56,6 +57,51 @@ static void draw_rounded_vector_rectangle(const Vector2 center_pos, const float 
     }
 }
 
+static void draw_vector_space_ship(const Vector2 center_pos, const float body_width, const float body_height,
+                                   const Color ship_color, const Vec2 facing_dir) {
+    const float half_w = body_width * 0.5f;
+    const float half_h = body_height * 0.5f;
+
+    float rotation_deg = 0.0f;
+    if (facing_dir.x != 0.0f || facing_dir.y != 0.0f) {
+        const float angle_rad = atan2f(facing_dir.y, facing_dir.x);
+        rotation_deg = angle_rad * (180.0f / 3.14159265358979323846f) + 90.0f;
+    }
+
+    rlPushMatrix();
+    rlTranslatef(center_pos.x, center_pos.y, 0.0f);
+    rlRotatef(rotation_deg, 0.0f, 0.0f, 1.0f);
+
+    const Rectangle body_rec = {
+        .x = -half_w,
+        .y = -half_h,
+        .width = body_width,
+        .height = body_height
+    };
+
+    DrawRectangleRec(body_rec, ship_color);
+
+    const Vector2 nose_tip = {.x = 0.0f, .y = -half_h - (body_height * 0.5f)};
+    const Vector2 nose_left = {.x = -half_w, .y = -half_h};
+    const Vector2 nose_right = {.x = half_w, .y = -half_h};
+
+    DrawTriangle(nose_tip, nose_left, nose_right, ship_color);
+
+    const Vector2 left_wing_tip = {.x = -half_w - (body_width * 0.5f), .y = half_h};
+    const Vector2 left_wing_top = {.x = -half_w, .y = -half_h * 0.2f};
+    const Vector2 left_wing_base = {.x = -half_w, .y = half_h};
+
+    DrawTriangle(left_wing_top, left_wing_tip, left_wing_base, ship_color);
+
+    const Vector2 right_wing_tip = {.x = half_w + (body_width * 0.5f), .y = half_h};
+    const Vector2 right_wing_top = {.x = half_w, .y = -half_h * 0.2f};
+    const Vector2 right_wing_base = {.x = half_w, .y = half_h};
+
+    DrawTriangle(right_wing_top, right_wing_base, right_wing_tip, ship_color);
+
+    rlPopMatrix();
+}
+
 static void render_ui(void) {
     const char *controls_text = "W A S D : MOVE";
     const char *scene_type_text = "C : TOGGLE EXAMPLES";
@@ -65,8 +111,8 @@ static void render_ui(void) {
 }
 
 static void draw_vector_vehicle(const Vector2 center_pos, const float body_width, const float body_height,
-                                const Color body_color, const float facing_dir) {
-    const float dir = facing_dir < 0.0f ? -1.0f : 1.0f;
+                                const Color body_color, const Vec2 facing_dir) {
+    const float dir = facing_dir.x < 0.0f ? -1.0f : 1.0f;
 
     const float wedge_height = body_height * 0.16f;
     const float cabin_height = body_height * 0.91f;
@@ -207,6 +253,9 @@ void render_system_vector_update(void) {
         if (HAS_COMPONENT(vehicle, i)) {
             const Vehicle *ve = GET_COMPONENT(vehicle, i);
             draw_vector_vehicle(entity_pos, width, height, color, ve->direction);
+        } else if (HAS_COMPONENT(space_ship, i)) {
+            const SpaceShip *sp = GET_COMPONENT(space_ship, i);
+            draw_vector_space_ship(entity_pos, width, height, color, sp->direction);
         } else {
             const float corner_radius = (width < height ? width : height) * 0.05f;
             draw_rounded_vector_rectangle(entity_pos, width, height, t->rotation, corner_radius, color);
