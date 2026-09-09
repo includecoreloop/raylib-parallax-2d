@@ -6,6 +6,16 @@ It is perfect for anyone starting with low-level game development or looking for
 
 ---
 
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=az1n_wL65KA">
+    <img src="https://img.youtube.com/vi/az1n_wL65KA/maxresdefault.jpg" alt="Watch the Overview Video" width="90%" />
+  </a>
+  <br>
+  <em>▶️ Click above to watch the full preview on YouTube</em>
+</p>
+
+---
+
 ### ✨ Features
 
 * **Tech Stack:** Built with C17 and Raylib.
