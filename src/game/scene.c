@@ -1,11 +1,13 @@
 #include "scene.h"
 
+#include "../components/space_ship.h"
 #include "../components/vehicle.h"
 #include "../components/transform.h"
 #include "../core/config.h"
 #include "../core/math.h"
 
 #include "prefabs/vehicle_prefab.h"
+#include "prefabs/space_ship_prefab.h"
 #include "prefabs/block_prefab.h"
 
 Entity vehicle_entity = 0;
@@ -458,7 +460,7 @@ void scene_init(void) {
 
     if (scene_type == 2) {
         build_floating_rectangles_back();
-        vehicle_entity = vehicle_prefab_create();
+        vehicle_entity = space_ship_prefab_create();
         build_floating_rectangles_front();
     }
 }
@@ -467,6 +469,8 @@ void scene_destroy(void) {
     for (int i = MAX_ENTITIES - 1; i >= 0; --i) {
         if (HAS_COMPONENT(vehicle, i)) {
             vehicle_prefab_destroy(i);
+        } else if (HAS_COMPONENT(space_ship, i)) {
+            space_ship_prefab_destroy(i);
         } else if (HAS_COMPONENT(transform, i)) {
             block_prefab_destroy(i);
         }

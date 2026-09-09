@@ -6,6 +6,6 @@
 typedef struct {
     float speed;
     Vec2 direction;
-} Vehicle;
+} SpaceShip;
 
-COMPONENT_DEFINE(Vehicle, vehicle);
+COMPONENT_DEFINE(SpaceShip, space_ship);

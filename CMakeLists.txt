@@ -24,6 +24,8 @@ target_sources(parallax PRIVATE
         src/components/velocity.h
         src/components/vehicle.c
         src/components/vehicle.h
+        src/components/space_ship.c
+        src/components/space_ship.h
         src/components/parallax_layer.c
         src/components/parallax_layer.h
 )
@@ -46,6 +48,8 @@ target_sources(parallax PRIVATE
         src/game/scene.h
         src/game/prefabs/vehicle_prefab.c
         src/game/prefabs/vehicle_prefab.h
+        src/game/prefabs/space_ship_prefab.c
+        src/game/prefabs/space_ship_prefab.h
         src/game/prefabs/block_prefab.c
         src/game/prefabs/block_prefab.h
 )
